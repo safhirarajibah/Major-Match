@@ -1,23 +1,3 @@
-body {
-    background-image: url('https://graduate.binus.ac.id/files/2023/04/GAMBAR-SPLAH-10-scaled.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
-@keyframes moveText {
-    0% {
-        transform: translateX(-100%); /* Mulai dari kiri layar */
-    }
-    100% {
-        transform: translateX(100%); /* Bergerak ke kanan layar */
-    }
-}
-
-.animated-text {
-    font-size: 2rem;
-    font-weight: bold;
-    animation: moveText 5s linear infinite; /* Animasi bergerak selama 5 detik dan berulang */
-}
 <!DOCTYPE html>
 <html lang="en">
 <head>
