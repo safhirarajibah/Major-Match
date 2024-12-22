@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Temukan jurusan terbaik berdasarkan mata pelajaran favorit Anda di Website Rekomendasi Jurusan ini. Dapatkan rekomendasi jurusan secara mudah dan cepat! (Diawali dengan huruf kapital, contoh: Matematika, Geografi.)">
+    <link rel="icon" type="image/png" href="website/MajorMatch.png">
+    <title>MajorMatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-image: url('https://graduate.binus.ac.id/files/2023/04/GAMBAR-SPLAH-10-scaled.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .chat-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .chat-header h1 {
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .chat-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-form input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .chat-form button {
+            padding: 10px;
+            background: #ff9500;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .chat-form button:hover {
+            background: #893e00;
+        }
+        .chat-output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Rekomendasi Jurusan Berdasarkan Pelajaran Favorit</h1>
+            <p>Website ini dirancang untuk membantu Anda menemukan jurusan yang sesuai dengan mata pelajaran favorit Anda. Masukkan pelajaran favorit Anda dan dapatkan rekomendasi jurusan yang relevan! (Diawali dengan huruf kapital, contoh: Matematika, Geografi.)</p>
+        </div>
+        <form class="chat-form" id="chatForm">
+            <label for="subject">Apa mata pelajaran favoritmu?</label>
+            <input type="text" id="subject" placeholder="Masukkan mata pelajaran, contoh: Matematika...">
+            <button type="submit">Cari Jurusan</button>
+        </form>
+        <div class="chat-output" id="chatOutput" style="display: none;"></div>
+    </div>
+
+    <script>
+        const recommendations = {
+            "Matematika": ["Pendidikan Matematika" ,"Teknik Informatika", "Aktuaria", "Statistika", "Matematika", "Matematika Bisnis", "Sistem Informasi", "Sistem Komputer", "Ilmu Komputer", "Teknik Komputer", "Teknologi Informasi", "Teknik Telekomunikasi", "Sains Data", "Cyber Security", "Teknologi Rekayasa Multimedia", "Manajemen Informatika", "Perencanaan Wilayah dan Kota", "Konstruksi", "Arsitektur", "Arsitektur Lanskap", "Rekayasa Perangkat Lunak"],
+            "Fisika": ["Geofisika", "Fiska", "Pendidikan Fisika", "Teknik Mesin", "Teknik Elektro", "Astronomi", "Meteorologi", "Teknik Geologi", "Teknik Geodesi", "Teknik Geomatika", "Instrumentasi", "Teknik Robotika", "Teknik Otomotif", "Teknik Fisika", "Teknik Material", "Teknik Nuklir"],
+            "Biologi": ["Kedokteran", "Bioteknologi", "Farmasi", "Biologi", "Pendidikan Biologi", "Ilmu Lingkungan", "Kehutanan", "Peternakan", "Pertanian", "Teknik Biomedis", "Kebidanan", "Kesehatan Lingkungan", "Gizi", "Fisioterapi", "Kedokteran Hewan", "Pendidikan Kedokteran Gigi", "Biokimia", "Mikrobiologi", "Ilmu Biomedis", "Ilmu Kelautan", "Ilmu Perikanan"],
+            "Kimia": ["Kimia", "Pendidikan Kimia", "Teknik Kimia", "Gizi", "Biokimia", "Teknik Pertambangan", "Teknik Perminyakan", "Teknik Metalurgi", "Teknik Nuklir", "Teknik Material"],
+            "Sosiologi": ["Kesejahteraan Sosial", "Antropologi Sosial", "Pendidikan Sosiologi", "Ilmu Komunikasi", "Hubungan Internasional", "Psikologi", "Ilmu Politik", "Administrasi Publik", "Kriminologi", "Studi Pembangunan", "Sosiologi", "Pariwisata", "Perhotelan", "Tata Boga"],
+            "Ekonomi": ["Ilmu Ekonomi", "Ekonomi Pembangunan", "Ekonomi Syariah", "Akuntansi", "Manajemen", "Keuangan dan Perbankan", "Bisnis Internasional", "Ekonomi Pertanian", "Ekonomi Sumberdaya dan Lingkungan", "Statistika", "Pendidikan Ekonomi Koperasi", "Bisnis Digital", "Teknik Industri"],
+            "Sejarah": ["Sejarah", "Pendidikan Sejarah", "Ilmu Politik", "Hubungan Internasional", "Antropologi", "Arkeologi", "Sastra dan Bahasa Daerah", "Ilmu Hukum", "Ilmu Komunikasi", "Administrasi Publik"],
+            "Geografi": ["Geografi", "Pendidikan Geografi", "Teknik Geologi", "Geofisika", "Meteorologi", "Oseanografi", "Planologi", "Teknik Geodesi", "Teknik Geomatika", "Ilmu Pengelolaan dan Pemberdayaan Sumber Daya Alam dan Lingkungan", "Ilmu Lingkungan", "Pariwisata", "Konservasi Sumber Daya Hutan", "Manajemen Bencana"],
+            "Seni": ["DKV", "Seni Rupa", "Seni Kriya", "Desain Grafis", "Fotografi", "Desain Interior", "Seni Tari", "Seni Musik", "Seni Pertunjukan", "Sinematografi", "Animasi", "Film dan Televisi", "Tata Busana"],
+            "Bahasa": ["Sastra Asing", "Sastra Indonesia", "Sastra Inggris", "Pendidikan Bahasa Indonesia", "Pendidikan Bahasa Inggris", "Ilmu Linguistik", "Filsafat"],
+            "Olahraga": ["Pendidikan Olahraga", "Ilmu Keolahragaan", "Pendidikan Jasmani, Kesehatan, dan Rekreasi", "Manajemen Olahraga"],
+            "Agama": ["Ilmu Agama Islam", "Pendidikan Agama Islam", "Manajemen Dakwah", "Psikologi Islam", "Sastra Arab"]
+        };
+
+        document.getElementById('chatForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const subject = document.getElementById('subject').value.trim();
+            const outputDiv = document.getElementById('chatOutput');
+
+            if (subject in recommendations) {
+                const result = recommendations[subject]
+                .map(jurusan => `<a href="detail.html?major=${encodeURIComponent(jurusan)}">${jurusan}</a>`)
+                .join('<br>');
+
+                outputDiv.innerHTML = `Rekomendasi jurusan:<br>${result}`;
+        } else {
+            outputDiv.textContent = "Maaf, jurusan untuk mata pelajaran tersebut belum tersedia.";
+        }
+
+            outputDiv.style.display = "block";
+        });
+    </script>
+</body>
+</html>

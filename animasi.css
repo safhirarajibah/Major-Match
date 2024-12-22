@@ -1,0 +1,14 @@
+@keyframes moveText {
+    0% {
+        transform: translateX(-100%); /* Mulai dari kiri layar */
+    }
+    100% {
+        transform: translateX(100%); /* Bergerak ke kanan layar */
+    }
+}
+
+.animated-text {
+    font-size: 2rem;
+    font-weight: bold;
+    animation: moveText 5s linear infinite; /* Animasi bergerak selama 5 detik dan berulang */
+}
