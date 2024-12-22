@@ -1,4 +1,3 @@
-# Major-Match
 <!DOCTYPE html>
 <html lang="en">
 <head>
